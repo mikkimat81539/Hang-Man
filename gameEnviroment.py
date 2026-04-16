@@ -31,4 +31,6 @@ class displayFonts:
 
 	def drawSurface(self, surface, words):
 		surface.blit(self.setSurface, (self.x_pos, self.y_pos))
-		self.setSurface.fill("white")	
+		self.setSurface.fill("white")
+		
+		#self.drawText(surface, word)
