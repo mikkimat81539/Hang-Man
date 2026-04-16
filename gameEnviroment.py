@@ -20,6 +20,7 @@ class displayFonts:
 		self.y_pos = y_pos
 		self.color = color
 		self.size = size
+		self.setSurface = pygame.Surface((35, 50))
 
 	def drawText(self, surface, words):
 		hints = "_ " * len(words) 
@@ -27,3 +28,7 @@ class displayFonts:
 		createFont = pygame.font.SysFont("Arial.ttf", self.size)
 		renderFont = createFont.render(hints, False, self.color)
 		surface.blit(renderFont, (self.x_pos, self.y_pos))
+
+	def drawSurface(self, surface, words):
+		surface.blit(self.setSurface, (self.x_pos, self.y_pos))
+		self.setSurface.fill("white")	

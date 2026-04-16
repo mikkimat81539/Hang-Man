@@ -11,7 +11,7 @@ pygame.display.set_caption("Hang Man")
 answer = "basketball"
 
 # DISPLAY HINTS
-hints = displayFonts(50, 300, "black", 90)
+displayHints = displayFonts(50, 300, "black", 90)
 
 # MAIN LOOP
 running = True
@@ -24,10 +24,12 @@ while running:
 		if event.type == pygame.MOUSEBUTTONDOWN:
 			mouse = pygame.mouse.get_pos()
 			print(mouse)
+		
 
 	screen.fill("wheat")
 	
-	hints.drawText(screen, answer)
+	displayHints.drawText(screen, answer)
+	displayHints.drawSurface(screen, answer)
 
 	pygame.display.flip()
 
