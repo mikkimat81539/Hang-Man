@@ -21,16 +21,31 @@ class displaySurface:
 		self.setSurface.fill(self.color)
 
 	def displayFont(self, activeString):
-		createFont = pygame.font.SysFont("Arial.ttf",50)
+		createFont = pygame.font.SysFont("Arial.ttf",30)
 		renderFont = createFont.render(activeString, False, "black")
 		self.setSurface.blit(renderFont, (4, 10))
 
+	def displayHints(self, surface, answer, activeString):
+		hints = ""
+		for i in answer:
+			if i in activeString:
+				hints += i + " "  # Show letter if guessed
+			else:
+				hints += "_ " 
+
+	
+		createFont = pygame.font.SysFont("Arial.ttf",50)
+		renderFont = createFont.render(hints, False, "black")
+		surface.blit(renderFont, (self.x_pos, 210))
+
 # SURFACE OBJECT
-surface1 = displaySurface(20, 200, 30, 50, "white")
+surface1 = displaySurface(20, 200, 20, 30, "white")
 
 # WORDS
 letters = string.ascii_lowercase
 activeString = "" # userInput
+answer = "apple"
+
 # MAIN LOOP
 running = True
 
@@ -51,6 +66,8 @@ while running:
 
 	surface1.drawSurface(screen)
 	surface1.displayFont(activeString)
+	surface1.displayHints(screen, answer, activeString)
+
 	pygame.display.flip()
 
 pygame.quit()
