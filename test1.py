@@ -25,10 +25,11 @@ class displaySurface:
 		renderFont = createFont.render(activeString, False, "black")
 		self.setSurface.blit(renderFont, (4, 10))
 
-	def displayHints(self, surface, answer, activeString):
+	def displayHints(self, surface, answer, userInput):
 		hints = ""
+
 		for i in answer:
-			if i in activeString:
+			if i in userInput:
 				hints += i + " "  # Show letter if guessed
 			else:
 				hints += "_ " 
@@ -39,12 +40,12 @@ class displaySurface:
 		surface.blit(renderFont, (self.x_pos, 210))
 
 # SURFACE OBJECT
-surface1 = displaySurface(20, 200, 20, 30, "white")
+surface1 = displaySurface(20, 150, 200, 30, "white")
 
 # WORDS
 letters = string.ascii_lowercase
-activeString = "" # userInput
-answer = "apple"
+userInput = "" # userInput
+answer = "basketball"
 
 # MAIN LOOP
 running = True
@@ -55,18 +56,18 @@ while running:
 			running = False
 		if event.type == pygame.KEYDOWN:
 			if event.unicode.lower() in letters:
-				activeString += event.unicode.lower() # adding char
-				if len(activeString) != 1:
-					activeString = activeString[:-1]
+				userInput += event.unicode.lower() # adding char
+				#if len(userInput) != 1:
+					#userInput = userInput[:-1]
 
-			if event.key == pygame.K_BACKSPACE and len(activeString) > 0:
-				activeString = activeString[:-1] # deleting char
+			if event.key == pygame.K_BACKSPACE and len(userInput) > 0:
+				userInput = userInput[:-1] # deleting char
 
 	screen.fill("wheat")
 
 	surface1.drawSurface(screen)
-	surface1.displayFont(activeString)
-	surface1.displayHints(screen, answer, activeString)
+	surface1.displayFont(userInput)
+	surface1.displayHints(screen, answer, userInput)
 
 	pygame.display.flip()
 
