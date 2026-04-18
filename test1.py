@@ -27,6 +27,7 @@ class displaySurface:
 
 	def displayHints(self, surface, answer, userInput):
 		hints = ""
+		cursor_x = 10 + cursor_pos * (self.width + 5)
 
 		for i in answer:
 			if i in userInput:
