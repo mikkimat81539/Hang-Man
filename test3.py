@@ -13,11 +13,9 @@ pygame.display.set_caption("Hang Man")
 answer = "basketball".upper()
 hints = ["_"] * len(answer)
 userInput = ""
-
-# if incorrect show red
+guessed_letter = []
 
 # if len(answer) > 5 than x_pos and y_pos need to be adjusted accordingly
-
 
 def displayHints(surface, hints):
 	joinHints = " ".join(hints)
@@ -29,8 +27,22 @@ def displayHints(surface, hints):
 	renderFont = createFont.render(joinHints, False, "black")
 	surface.blit(renderFont, (cursorPos_x, cursorPos_y))
 
+def displayGuessed(surface):
+	response = "Letter already selected"
+
+	cursorPos_x = screen_w // 4
+	cursorPos_y = screen_h // 2
+
+	createFont = pygame.font.SysFont("Arial.ttf", 35)
+	renderFont = createFont.render(response, True, "black")
+	surface.blit(renderFont, (cursorPos_x , 20))
+
+
 def displayAnswers(hints, answer, userInput):
 	correctLetter = False
+
+	#if userInput in guessed_letter:
+		#displayGuessed(screen)
 
 	for i in range(len(answer)):
 		if answer[i] in userInput:
@@ -39,7 +51,10 @@ def displayAnswers(hints, answer, userInput):
 			correctLetter = True
 
 	if correctLetter:
-		return hints
+		guessed_letter.append(userInput)
+
+		if userInput in guessed_letter:
+			displayGuessed(screen)
 
 # MAIN LOOP
 running = True
