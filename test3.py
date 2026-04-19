@@ -13,9 +13,8 @@ pygame.display.set_caption("Hang Man")
 answer = "basketball".upper()
 hints = ["_"] * len(answer)
 userInput = ""
-guessed_letter = []
-
-# if len(answer) > 5 than x_pos and y_pos need to be adjusted accordingly
+guessed_letter = set()
+showMsg = False
 
 def displayHints(surface, hints):
 	joinHints = " ".join(hints)
@@ -27,7 +26,7 @@ def displayHints(surface, hints):
 	renderFont = createFont.render(joinHints, False, "black")
 	surface.blit(renderFont, (cursorPos_x, cursorPos_y))
 
-def displayGuessed(surface):
+def displayResponse(surface, screen_w, screen_h):
 	response = "Letter already selected"
 
 	cursorPos_x = screen_w // 4
@@ -37,25 +36,14 @@ def displayGuessed(surface):
 	renderFont = createFont.render(response, True, "black")
 	surface.blit(renderFont, (cursorPos_x , 20))
 
+	return response
+
 
 def displayAnswers(hints, answer, userInput):
-	correctLetter = False
-
-	#if userInput in guessed_letter:
-		#displayGuessed(screen)
-
 	for i in range(len(answer)):
 		if answer[i] in userInput:
 			hints[i] = answer[i]
 			joinHints = "".join(hints)
-			correctLetter = True
-
-	if correctLetter:
-		guessed_letter.append(userInput)
-
-		if userInput in guessed_letter:
-			displayGuessed(screen)
-
 # MAIN LOOP
 running = True
 
@@ -65,15 +53,26 @@ while running:
 			running = False
 		
 		if event.type == pygame.KEYDOWN:
+			showMsg = False
+
 			if event.unicode in string.ascii_letters:
-				userInput += event.unicode.upper() 
-				#if len(userInput) != 1:
-					#userInput = userInput[:-1]
+				letter = event.unicode.upper()
+			
+				if letter not in guessed_letter:
+					userInput += letter
+					guessed_letter.add(letter)
+					showMsg = False
+	
+				else:
+					showMsg = True
 
 			if event.key == pygame.K_BACKSPACE and len(userInput) > 0:
 				userInput = userInput[:-1]
-
+	
 	screen.fill("wheat")
+	
+	if showMsg:
+		displayResponse(screen, screen_w, screen_h)
 
 	displayHints(screen, hints)
 	displayAnswers(hints, answer, userInput)
