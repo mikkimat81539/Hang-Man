@@ -44,6 +44,10 @@ def displayAnswers(hints, answer, userInput):
 		if answer[i] in userInput:
 			hints[i] = answer[i]
 			joinHints = "".join(hints)
+
+def losePoints():
+	pass
+
 # MAIN LOOP
 running = True
 
@@ -62,6 +66,9 @@ while running:
 					userInput += letter
 					guessed_letter.add(letter)
 					showMsg = False
+
+				elif letter not in answer:
+					print(False)
 	
 				else:
 					showMsg = True
