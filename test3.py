@@ -9,7 +9,7 @@ screen_h = 300
 screen = pygame.display.set_mode((screen_w, screen_h))
 pygame.display.set_caption("Hang Man")
 
-# SPRITES
+# SPRITE CLASS
 class Hangman:
 	def __init__(self, x_pos, y_pos, width, height, color, filename):
 		self.x_pos = x_pos
@@ -27,10 +27,10 @@ class Hangman:
 		self.setSurface.fill(self.color)
 		self.setSurface.blit(self.image, (45, self.y_pos))
 
+# SPRITE
 spriteList = ['assets/head.png', 'assets/body.png', 'assets/leftArm.png',
 		'assets/rightArm.png', 'assets/leftLeg.png', 'assets/rightLeg.png']
 sprite_pos = 0
-
 sprites = Hangman(screen_w // 4, 10, 200, 200, "white", spriteList[sprite_pos])
 
 # HINTS
@@ -59,7 +59,7 @@ def displayResponse(surface, screen_w, screen_h):
 
 	createFont = pygame.font.SysFont("Arial.ttf", 35)
 	renderFont = createFont.render(response, True, "black")
-	surface.blit(renderFont, (cursorPos_x , 20))
+	surface.blit(renderFont, (cursorPos_x , 220))
 
 	return response
 
@@ -83,17 +83,19 @@ while running:
 
 			if event.unicode in string.ascii_letters:
 				letter = event.unicode.upper()
-			
+	
 				if letter not in guessed_letter:
-					userInput += letter
-					guessed_letter.add(letter)
 					showMsg = False
 
-				elif letter not in answer:
-					print(False)
-	
 				else:
 					showMsg = True
+				
+
+				if letter not in answer:
+					print(False)
+				else:
+					userInput += letter
+					guessed_letter.add(letter)
 
 			if event.key == pygame.K_BACKSPACE and len(userInput) > 0:
 				userInput = userInput[:-1]
