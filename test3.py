@@ -1,4 +1,5 @@
-import pygame, string
+import pygame, string, sys
+from random_word import RandomWords
 
 pygame.init()
 
@@ -28,13 +29,17 @@ class Hangman:
 		self.setSurface.blit(self.image, (45, self.y_pos))
 
 # SPRITE
-spriteList = ['assets/head.png', 'assets/body.png', 'assets/leftArm.png',
+spriteList = ['assets/empty.png', 'assets/head.png', 'assets/body.png', 'assets/leftArm.png',
 		'assets/rightArm.png', 'assets/leftLeg.png', 'assets/rightLeg.png']
 sprite_pos = 0
-sprites = Hangman(screen_w // 4, 10, 200, 200, "white", spriteList[sprite_pos])
+sprites = Hangman(screen_w // 4, 10, 200, 200, "wheat", spriteList[sprite_pos])
+
+displaySprites = False
 
 # HINTS
-answer = "basketball".upper()
+word = RandomWords()
+answer = word.get_random_word().upper()
+print(answer)
 hints = ["_"] * len(answer)
 userInput = ""
 guessed_letter = set()
@@ -44,12 +49,12 @@ showMsg = False
 def displayHints(surface, hints):
 	joinHints = " ".join(hints)
 	
-	cursorPos_x = screen_w // 4
+	# cursorPos_x = screen_w // 4
 	cursorPos_y = screen_h - 50
 
 	createFont = pygame.font.SysFont("Arial.ttf", 50)
 	renderFont = createFont.render(joinHints, False, "black")
-	surface.blit(renderFont, (cursorPos_x, cursorPos_y))
+	surface.blit(renderFont, (90, cursorPos_y))
 
 def displayResponse(surface, screen_w, screen_h):
 	response = "Letter already selected"
@@ -69,6 +74,10 @@ def displayAnswers(hints, answer, userInput):
 		if answer[i] in userInput:
 			hints[i] = answer[i]
 			joinHints = "".join(hints)
+
+	if "_" not in hints:
+		print("YOU WIN")
+		sys.exit()
 
 # MAIN LOOP
 running = True
@@ -92,7 +101,15 @@ while running:
 				
 
 				if letter not in answer:
-					print(False)
+					displaySprites = True
+					sprite_pos += 1
+
+					if sprite_pos >= len(spriteList):
+						sprite_pos = 0
+						print("YOU LOSE")
+						running = False
+					
+					sprites.filename = spriteList[sprite_pos]
 				else:
 					userInput += letter
 					guessed_letter.add(letter)
@@ -108,7 +125,8 @@ while running:
 	displayHints(screen, hints)
 	displayAnswers(hints, answer, userInput)
 
-	sprites.drawSprites(screen)
+	if displaySprites:
+		sprites.drawSprites(screen)
 	
 	pygame.display.flip()
 
